@@ -23,7 +23,7 @@ jobs:
           echo "$(git --no-pager log -1 --format='%B' | sed "1s/$SED_PATTERN//")"
           echo xxxxxxxxxxxx
           git commit --amend -m "$(git --no-pager log -1 --format='%B' | sed "1s/$SED_PATTERN//")"
-          git diff --quiet && git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push origin HEAD:${GITHUB_REF})
+          git push origin HEAD:${GITHUB_REF}
         else
           echo "commit looks ok, skipped"
         fi
