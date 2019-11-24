@@ -23,9 +23,6 @@ jobs:
         
         if git --no-pager log -1 --format='%B' | grep "$SED_PATTERN" ; then
           echo "rewriting commit-message..."
-          echo xxxxxxxxxxxx
-          echo "$(git --no-pager log -1 --format='%B' | sed "1s/$SED_PATTERN//")"
-          echo xxxxxxxxxxxx
           git commit --amend -m "$(git --no-pager log -1 --format='%B' | sed "1s/$SED_PATTERN//")"
           git push --force origin HEAD:${GITHUB_REF}
         else
