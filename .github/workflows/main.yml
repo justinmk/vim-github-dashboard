@@ -11,7 +11,7 @@ jobs:
     - name: Rewrite merge-commit message
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SED_PATTERN: "[pP]ull [rR]equest"
+        SED_PATTERN: "[pP]ull [rR]equest \\2"
       run: |
         git config user.email "actions@github"
         git config user.name "Github Actions"
@@ -20,9 +20,9 @@ jobs:
         if git --no-pager log -1 --format='%B' | grep "$SED_PATTERN" ; then
           echo "rewriting commit-message..."
           echo xxxxxxxxxxxx
-          echo "$(git --no-pager log -1 --format='%B' | sed '1s/$SED_PATTERN \?//')"
+          echo "$(git --no-pager log -1 --format='%B' | sed "1s/$SED_PATTERN//")"
           echo xxxxxxxxxxxx
-          git commit --amend -m "$(git --no-pager log -1 --format='%B' | sed '1s/$SED_PATTERN \?//')"
+          git commit --amend -m "$(git --no-pager log -1 --format='%B' | sed "1s/$SED_PATTERN//")"
           git diff --quiet && git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push origin HEAD:${GITHUB_REF})
         else
           echo "commit looks ok, skipped"
