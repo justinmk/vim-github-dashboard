@@ -11,7 +11,7 @@ jobs:
     - name: Rewrite merge-commit message
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SED_PATTERN: "[pP]ull [rR]equest \\2"
+        SED_PATTERN: "[pP]ull [rR]equest \\?"
       run: |
         git config user.email "actions@github"
         git config user.name "Github Actions"
