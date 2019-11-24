@@ -17,7 +17,12 @@ jobs:
         git config user.name "Github Actions"
         git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
         
-        git --no-pager log -1 --format='%B' | grep "$SED_PATTERN" && { git commit --amend -m "$(git --no-pager log -1 --format='%B' | sed '1s/$SED_PATTERN \?//')" ; } || true
+        if git --no-pager log -1 --format='%B' | grep "$SED_PATTERN" ; then
+          echo "rewriting commit-message..."
+          git commit --amend -m "$(git --no-pager log -1 --format='%B' | sed '1s/$SED_PATTERN \?//')"
+        else
+          echo "commit looks ok, skipped"
+        fi
            
         # Only commit and push if we have changes
         # git diff --quiet && git diff --staged --quiet || (git commit -m "${COMMIT_MSG}"; git push origin HEAD:${GITHUB_REF})
